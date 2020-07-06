@@ -1,6 +1,8 @@
 # rebus-geo-ui
 user interface for Rebus Geo "Rost"
 
+![CI](https://github.com/ilya-pro/rebus-geo-ui/workflows/CI/badge.svg)
+
 ## Project setup
 ```
 npm install
