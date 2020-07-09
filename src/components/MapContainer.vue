@@ -2,10 +2,15 @@
     <div class="reb-MapContainer">
         <!--<span style="position: absolute; background-color: red; color: white;">MapCont</span>-->
         <!--TODO resize from ref-->
-        <Map :filter="filter" ref="map"/>
+        <Map ref="map"
+             :filter="filter"
+             :mode="mode"/>
         <CatFilter :items="items"
                    v-on:filter-change="filterChange"/>
-
+        <Switcher v-model="mode"
+                  :items="modeItems"
+                  class="reb-MapContainer__modeSwitcher"
+                  v-on:mode-change="mapModeChange"/>
         <!--TODO ZoomPanel-->
         <!--TODO Search-->
     </div>
@@ -14,6 +19,8 @@
 <script>
     import Map from '@/components/Map.vue'
     import CatFilter from "./CatFilter";
+    import axios from "axios";
+    import Switcher from "./Switcher";
 
     export default {
         name: "MapContainer",
@@ -28,7 +35,13 @@
                     {id: 'sports_ground', name: 'Спортивные объекты', enabled: true, icon: 'sport'},
                     {id: 'post_office', name: 'Почтовые отделения', enabled: true, icon: 'basket'},
                     {id: 'waste_points', name: 'Пункты РСО', enabled: false, icon: 'basket'}
-                ]/*,
+                ],
+                modeItems: [
+                    {id: 'all', name: 'вместе'},
+                    {id: 'heat', name: 'тепловая'},
+                    {id: 'hexagon', name: 'соты'}
+                ],
+                mode: 'heat'/*,
                 filter: [/!*'school'*!/ 'bus_station']*/
             }
         },
@@ -37,8 +50,27 @@
         },
         mounted() {
             window.addEventListener('resize', this.handleWindowResize);
+            this.getCategories();
         },
         methods: {
+            getCategories() {
+                let filterString = '';
+                axios
+                    .get('https://rebus-hackaton.herokuapp.com/geo_data/categories/' + filterString)
+                    .then(response => {
+                        console.log('2 that', response.data);
+                        this.items = response.data.map(item => {
+                            return {
+                                id: item.id,
+                                name: item.name,
+                                enabled: true
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             filterChange(filterItems) {
                 let newFilter = [];
                 for (var i = 0, len = filterItems.length; i < len; i++ ) {
@@ -48,6 +80,9 @@
                 }
                 this.filter = newFilter;
                 //debugger;pr-HistoryOrdersCard__head
+            },
+            mapModeChange(mapMode) {
+                console.log(mapMode);
             },
             handleWindowResize(/*event*/) {
                 /*this.windowWidth = event.currentTarget.innerWidth;
@@ -69,6 +104,7 @@
             }
         },
         components: {
+            Switcher,
             CatFilter,
             Map
         }
@@ -78,5 +114,10 @@
 <style>
 .reb-MapContainer {
     height: 100%;
+}
+.reb-MapContainer__modeSwitcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 </style>

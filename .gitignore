@@ -1,6 +1,9 @@
 .DS_Store
 node_modules
 /dist
+/distDebug
+/outputRelease
+/outputDebug
 
 # local env files
 .env.local
