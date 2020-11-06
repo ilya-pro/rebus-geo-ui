@@ -1,0 +1,26 @@
+https://plantuml.com/ru/sequence-diagram
+@startuml
+header Page Header
+footer Page %page% of %lastpage%
+
+title Example Title
+
+box se #fde
+database BL
+participant "I have a really\nlong name" as L #99FF99
+endbox
+Сервер -> Bob: Аторизаия
+...
+L --> Alice: Authentication Response
+
+autonumber 6
+Alice -> Bob: Another authentication Request
+note left: this is a first note
+Alice <-- Bob: another authentication Response
+L--[#0000FF]-\ L: This is a signal to self.\nIt also demonstrates\nmultiline \ntext
+
+newpage A title for the\nlast page
+
+L -> Example
+Example --> Example: Very long text in the title
+@enduml

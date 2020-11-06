@@ -1,0 +1,33 @@
+https://plantuml.com/ru/sequence-diagram
+@startuml
+header Работа карты %page%
+footer Page %page% of %lastpage%
+
+title mounted
+
+participant "MapContainer"
+participant "CategoriesCache"
+participant CatFilter
+participant Map
+
+database BL
+
+[o-> MapContainer: mounted
+activate MapContainer
+MapContainer -> CategoriesCache: getCategories()
+CategoriesCache -> BL
+BL --> CategoriesCache
+CategoriesCache --> MapContainer
+MapContainer -> CatFilter
+CatFilter -> Map
+deactivate MapContainer
+
+...
+[o-> MapContainer: resize
+activate MapContainer
+MapContainer -> Map: resize()
+[x<- BL: getLayers
+[<-- BL:
+deactivate MapContainer
+
+@enduml
