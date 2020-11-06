@@ -2,6 +2,7 @@
     <div class="reb-MapContainer">
         <!--<span style="position: absolute; background-color: red; color: white;">MapCont</span>-->
         <!--TODO resize from ref-->
+        <!--TODO rename Map to two-word name--click>-->
         <Map ref="map"
              :filter="filter"
              :mode="mode"/>
